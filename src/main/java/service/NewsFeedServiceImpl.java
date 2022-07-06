@@ -18,6 +18,7 @@ public class NewsFeedServiceImpl implements NewsFeedService {
     public void register(User user) {
         if (userMap.containsKey(user.getUserId())) {
             // can not register same user again
+            throw new RuntimeException("can not register the same user again.");
         }
         userMap.put(user.getUserId(), user);
     }
@@ -27,6 +28,7 @@ public class NewsFeedServiceImpl implements NewsFeedService {
 
         if(!userMap.containsKey(userId1) || !userMap.containsKey(userId2)) {
            // throw user not register exception
+            throw new RuntimeException("Users are not found in the system "+ userId1+ " or " +userId2);
         }
 
         userMap.get(userId1).getSubscribedUser().add(userId2);
@@ -37,6 +39,7 @@ public class NewsFeedServiceImpl implements NewsFeedService {
     public void publishPost(News news) {
         if (!userMap.containsKey(news.getUserId())) {
             // invalid user publishing the post
+            throw new RuntimeException("User is not registed to post the news");
         }
         newsUserMap.put(count, news.getUserId());
         news.setId(count++);
@@ -67,6 +70,7 @@ public class NewsFeedServiceImpl implements NewsFeedService {
 
         if(!news.isPresent()) {
             // throw no newsId found for userId
+            throw new RuntimeException("newsId = "+ newsId+" not found in the system");
         }
 
         news.get().setLikes(news.get().getLikes() +1);
@@ -80,6 +84,7 @@ public class NewsFeedServiceImpl implements NewsFeedService {
 
         if(!news.isPresent()) {
             // throw no newsId found for userId
+            throw new RuntimeException("newsId = "+ newsId+" not found in the system");
         }
 
         news.get().setLikes(news.get().getLikes() -1);
@@ -92,6 +97,7 @@ public class NewsFeedServiceImpl implements NewsFeedService {
 
         if(!news.isPresent()) {
             // throw no newsId found for userId
+            throw new RuntimeException("newsId = "+ newsId+" not found in the system");
         }
 
         news.get().getComments().add(comment);
